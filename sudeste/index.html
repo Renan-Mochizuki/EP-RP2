@@ -126,7 +126,7 @@
 
     tile_layer_19e8a05415ce88a28b11dbbfd7036d7f.addTo(map_6a2e71ef4b32174f81e6a0c0c67919e6);
 
-    fetch('./municipios.json')
+    fetch('./sudeste/municipios.json')
       .then((response) => {
         if (!response.ok) throw new Error(`Erro ao carregar municípios: ${response.status}`);
         return response.json();
