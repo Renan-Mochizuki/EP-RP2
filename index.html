@@ -14,15 +14,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css" />
     <link rel="stylesheet" type="text/css" href="global.css" />
     <link rel="stylesheet" type="text/css" href="index.css" />
-    <meta
-      name="viewport"
-      content="width=device-width,
-                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-
-    <script>
-      L_NO_TOUCH = false;
-      L_DISABLE_3D = false;
-    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   </head>
   <body>
     <!-- <div class="regioes-painel" aria-label="Navegação por regiões">
@@ -32,93 +24,33 @@
 
     <div class="painel-classes">
       <b>Classificação dos municípios</b>
-      <hr style="margin: 7px 0" />
+      <hr class="legend-divider" />
 
-      <div style="margin: 5px 0">
-        <span style="display: inline-block; width: 12px; height: 12px; background: #808080; border: 1px solid #555; margin-right: 7px"></span>
-        Classe 0: 1.387 municípios
+      <div class="legend-item">
+        <span class="legend-color legend-color-808080"></span>
+        Classe 0: <span class="class-count" data-class="0">0</span> municípios
       </div>
 
-      <div style="margin: 5px 0">
-        <span style="display: inline-block; width: 12px; height: 12px; background: #2878b5; border: 1px solid #555; margin-right: 7px"></span>
-        Classe 1: 951 municípios
+      <div class="legend-item">
+        <span class="legend-color legend-color-2878b5"></span>
+        Classe 1: <span class="class-count" data-class="1">0</span> municípios
       </div>
 
-      <div style="margin: 5px 0">
-        <span style="display: inline-block; width: 12px; height: 12px; background: #d64545; border: 1px solid #555; margin-right: 7px"></span>
-        Classe 2: 1.277 municípios
+      <div class="legend-item">
+        <span class="legend-color legend-color-d64545"></span>
+        Classe 2: <span class="class-count" data-class="2">0</span> municípios
       </div>
 
-      <div style="margin: 5px 0">
-        <span style="display: inline-block; width: 12px; height: 12px; background: #f2c14e; border: 1px solid #555; margin-right: 7px"></span>
-        Classe 3: 1.955 municípios
+      <div class="legend-item">
+        <span class="legend-color legend-color-f2c14e"></span>
+        Classe 3: <span class="class-count" data-class="3">0</span> municípios
       </div>
     </div>
 
     <div class="folium-map" id="map_8230f5587939f2885ed5da8710cbf274"></div>
+    <button class="visualizacao-toggle" id="visualizacao-toggle" type="button" disabled>
+      Ver pontos
+    </button>
   </body>
-  <script>
-    var map_8230f5587939f2885ed5da8710cbf274 = L.map('map_8230f5587939f2885ed5da8710cbf274', {
-      center: [-14.2, -51.9],
-      crs: L.CRS.EPSG3857,
-      ...{
-        zoom: 4,
-        zoomControl: true,
-        preferCanvas: false,
-      },
-    });
-    L.control.scale().addTo(map_8230f5587939f2885ed5da8710cbf274);
-
-    var tile_layer_75b7e672e23d39f33aeb2f3b57153395 = L.tileLayer('https://basemaps.cartocdn.com/rastertiles/light_all/{z}/{x}/{y}.png?key=cb1_4rfx_1_77e134656d9a7c9838805a24', {
-      minZoom: 0,
-      maxZoom: 18,
-      maxNativeZoom: 18,
-      noWrap: false,
-      attribution: '\u00a9 OpenStreetMap contributors \u00a9 CARTO',
-      subdomains: 'abc',
-      detectRetina: false,
-      tms: false,
-      opacity: 1,
-    });
-
-    tile_layer_75b7e672e23d39f33aeb2f3b57153395.addTo(map_8230f5587939f2885ed5da8710cbf274);
-
-    fetch('./municipios.json')
-      .then((response) => {
-        if (!response.ok) throw new Error(`Erro ao carregar municípios: ${response.status}`);
-        return response.json();
-      })
-      .then((municipios) => {
-        const cores = {
-          0: '#808080',
-          1: '#2878B5',
-          2: '#D64545',
-          3: '#F2C14E',
-        };
-
-        municipios.forEach((municipio) => {
-          const cor = cores[municipio.classificacao] || '#161616';
-          const marcador = L.circleMarker([municipio.latitude, municipio.longitude], {
-            color: cor,
-            fillColor: cor,
-            fillOpacity: 0.85,
-            radius: 3,
-            weight: 1,
-          }).addTo(map_8230f5587939f2885ed5da8710cbf274);
-
-          marcador.bindPopup(`
-                        <div style="width: 100%; height: 100%;">
-                          <b>Código do município:</b> ${municipio.codigo}<br>
-                          <b>Nome do município:</b> ${municipio.nome}<br>
-                          <b>Classificação:</b> ${municipio.classificacao}<br>
-                          <b>Latitude:</b> ${municipio.latitude.toFixed(6)}<br>
-                          <b>Longitude:</b> ${municipio.longitude.toFixed(6)}
-                        </div>
-                      `);
-
-          marcador.bindTooltip(`<div>${municipio.nome} — Classe ${municipio.classificacao}</div>`, { sticky: true });
-        });
-      })
-      .catch((error) => console.error(error));
-  </script>
+  <script src="index.js"></script>
 </html>
