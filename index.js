@@ -38,11 +38,29 @@ const meshLayer = L.geoJSON(null, {
   onEachFeature: (feature, layer) => {
     const { NM_MUN, classe } = feature.properties;
     layer.bindTooltip(`<div><b>Município:</b> ${NM_MUN}<br><b>Classe:</b> ${classe}</div>`, { sticky: true });
+
+    layer.bindPopup(() => {
+      const municipio = municipalityInfo.get(NM_MUN);
+      if (!municipio) {
+        return `<div class="municipio-popup"><b>Município:</b> ${NM_MUN}<br><b>Classe:</b> ${classe}</div>`;
+      }
+
+      return `
+        <div class="municipio-popup">
+          <b>Código do município:</b> ${municipio.codigo}<br>
+          <b>Nome do município:</b> ${municipio.nome}<br>
+          <b>Classificação:</b> ${municipio.classificacao}<br>
+          <b>Latitude:</b> ${municipio.latitude.toFixed(6)}<br>
+          <b>Longitude:</b> ${municipio.longitude.toFixed(6)}
+        </div>
+      `;
+    });
   },
 });
 
 const pointsLayer = L.layerGroup();
 const toggleButton = document.getElementById('visualizacao-toggle');
+const municipalityInfo = new Map();
 
 function updateClassCounts(municipios) {
   const counts = municipios.reduce((result, municipio) => {
@@ -94,6 +112,7 @@ Promise.all([
 ])
   .then(([municipios, malha]) => {
     updateClassCounts(municipios);
+    municipios.forEach((municipio) => municipalityInfo.set(municipio.nome, municipio));
     addMunicipalityPoints(municipios);
 
     meshLayer.addData(malha).addTo(map);
