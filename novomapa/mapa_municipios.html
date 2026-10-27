@@ -13,147 +13,23 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css" />
 
+    <link rel="stylesheet" href="mapa_municipios.css" />
+
     <meta
       name="viewport"
       content="width=device-width,
                 initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <style>
-      #map_476a94180d29d1cccf68b915b1a352c6 {
-        position: relative;
-        width: 100%;
-        height: 100%;
-        left: 0%;
-        top: 0%;
-      }
-      .leaflet-container {
-        font-size: 1rem;
-      }
-    </style>
-
-    <style>
-      html,
-      body {
-        width: 100%;
-        height: 100%;
-        margin: 0;
-        padding: 0;
-      }
-    </style>
-
-    <style>
-      #map {
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        right: 0;
-        left: 0;
-      }
-    </style>
-
-    <script>
-      L_NO_TOUCH = false;
-      L_DISABLE_3D = false;
-    </script>
-
-    <style>
-      .foliumtooltip {
-      }
-      .foliumtooltip table {
-        margin: auto;
-      }
-      .foliumtooltip tr {
-        text-align: left;
-      }
-      .foliumtooltip th {
-        padding: 2px;
-        padding-right: 8px;
-      }
-    </style>
   </head>
   <body>
-    <div style="position: fixed; bottom: 30px; left: 30px; z-index: 9999; background: white; padding: 12px; border: 1px solid #bbb; border-radius: 5px; font-size: 14px">
+    <div class="map-legend">
       <b>Classificação</b><br />
-      <div><span style="background: #808080; width: 12px; height: 12px; display: inline-block; margin-right: 6px"></span>Classe 0</div>
-      <div><span style="background: #377eb8; width: 12px; height: 12px; display: inline-block; margin-right: 6px"></span>Classe 1</div>
-      <div><span style="background: #e41a1c; width: 12px; height: 12px; display: inline-block; margin-right: 6px"></span>Classe 2</div>
-      <div><span style="background: #ffd700; width: 12px; height: 12px; display: inline-block; margin-right: 6px"></span>Classe 3</div>
+      <div><span class="legend-color legend-color-808080"></span>Classe 0</div>
+      <div><span class="legend-color legend-color-377eb8"></span>Classe 1</div>
+      <div><span class="legend-color legend-color-e41a1c"></span>Classe 2</div>
+      <div><span class="legend-color legend-color-ffd700"></span>Classe 3</div>
     </div>
 
     <div class="folium-map" id="map_476a94180d29d1cccf68b915b1a352c6"></div>
   </body>
-  <script>
-    var map_476a94180d29d1cccf68b915b1a352c6 = L.map('map_476a94180d29d1cccf68b915b1a352c6', {
-      center: [-14.2, -51.9],
-      crs: L.CRS.EPSG3857,
-      ...{
-        zoom: 4,
-        zoomControl: true,
-        preferCanvas: false,
-      },
-    });
-
-    var tile_layer_a59cc5f863bc4dd9bc4dc3c6aca3957a = L.tileLayer('https://basemaps.cartocdn.com/rastertiles/light_all/{z}/{x}/{y}.png?key=cb1_4rfx_1_77e134656d9a7c9838805a24', {
-      minZoom: 0,
-      maxZoom: 20,
-      maxNativeZoom: 20,
-      noWrap: false,
-      attribution: '\u00a9 OpenStreetMap contributors \u00a9 CARTO',
-      subdomains: 'abc',
-      detectRetina: false,
-      tms: false,
-      opacity: 1,
-    });
-
-    tile_layer_a59cc5f863bc4dd9bc4dc3c6aca3957a.addTo(map_476a94180d29d1cccf68b915b1a352c6);
-
-    const municipalityColors = {
-      0: '#808080',
-      1: '#377eb8',
-      2: '#e41a1c',
-      3: '#ffd700',
-    };
-
-    const geo_json_d498deba122898c532da0cac3a22d487 = L.geoJson(null, {
-      style: (feature) => ({
-        color: '#555555',
-        fillColor: municipalityColors[feature.properties?.classe] ?? '#d3d3d3',
-        fillOpacity: 0.8,
-        weight: 0.3,
-      }),
-    });
-
-    geo_json_d498deba122898c532da0cac3a22d487.bindTooltip(
-      (layer) => {
-        const { NM_MUN, classe } = layer.feature.properties;
-        return '<table><tr><th>Município:</th><td>' + NM_MUN + '</td></tr><tr><th>Classe:</th><td>' + classe + '</td></tr></table>';
-      },
-      { sticky: true, className: 'foliumtooltip' },
-    );
-
-    fetch('municipios.json')
-      .then((response) => {
-        if (!response.ok) throw new Error('Não foi possível carregar municipios.json');
-        return response.json();
-      })
-      .then((data) => {
-        geo_json_d498deba122898c532da0cac3a22d487.addData(data).addTo(map_476a94180d29d1cccf68b915b1a352c6);
-      })
-      .catch((error) => console.error(error));
-
-    var layer_control_756a5c079f84ff3dbbc2ed87a7c56cba_layers = {
-      base_layers: {
-        'CartoDB Positron': tile_layer_a59cc5f863bc4dd9bc4dc3c6aca3957a,
-      },
-      overlays: {
-        'Classifica\u00e7\u00e3o municipal': geo_json_d498deba122898c532da0cac3a22d487,
-      },
-    };
-    let layer_control_756a5c079f84ff3dbbc2ed87a7c56cba = L.control
-      .layers(layer_control_756a5c079f84ff3dbbc2ed87a7c56cba_layers.base_layers, layer_control_756a5c079f84ff3dbbc2ed87a7c56cba_layers.overlays, {
-        position: 'topright',
-        collapsed: true,
-        autoZIndex: true,
-      })
-      .addTo(map_476a94180d29d1cccf68b915b1a352c6);
-  </script>
+  <script src="mapa_municipios.js"></script>
 </html>
