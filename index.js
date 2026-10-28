@@ -83,11 +83,11 @@ function addMunicipalityPoints(municipios) {
 }
 
 Promise.all([
-  fetch('./municipios.json').then((response) => {
+  fetch('./json/municipiosPontos.json').then((response) => {
     if (!response.ok) throw new Error(`Erro ao carregar pontos: ${response.status}`);
     return response.json();
   }),
-  fetch('./novomapa/municipios.json').then((response) => {
+  fetch('./json/municipiosMalha.json').then((response) => {
     if (!response.ok) throw new Error(`Erro ao carregar malha: ${response.status}`);
     return response.json();
   }),
