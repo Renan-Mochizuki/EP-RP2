@@ -109,7 +109,7 @@ function createMeshLayer(malha) {
 }
 
 async function loadMunicipalitiesFromSpreadsheet() {
-  const response = await fetch('./municipios.xlsx');
+  const response = await fetch('./data/municipios.xlsx');
   if (!response.ok) throw new Error(`Erro ao carregar municipios.xlsx: ${response.status}`);
 
   const workbook = XLSX.read(await response.arrayBuffer(), { type: 'array' });
