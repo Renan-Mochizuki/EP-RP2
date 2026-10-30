@@ -101,14 +101,14 @@ function createPointsLayer(municipios) {
 function createMeshLayer(malha, municipalityInfo) {
   return L.geoJSON(malha, {
     style: (feature) => {
-      const municipio = municipalityInfo.get(feature.properties?.NM_MUN);
+      const municipio = municipalityInfo.get(String(feature.properties?.CD_MUN));
       const classe = municipio?.classificacao;
       const color = colors[classe] || '#161616';
       return { color: '#555', fillColor: color, fillOpacity: 0.8, weight: 0.3 };
     },
     onEachFeature: (feature, layer) => {
       const nome = feature.properties?.NM_MUN || 'Município não identificado';
-      const municipio = municipalityInfo.get(nome);
+      const municipio = municipalityInfo.get(String(feature.properties?.CD_MUN));
       const classe = municipio?.classificacao;
 
       layer.bindTooltip(
@@ -136,12 +136,12 @@ async function loadMunicipalitiesFromSpreadsheet(dataset) {
   }
 
   return rows.map((row, index) => {
-    const codigo = Number(row.CD_MUN);
+    const codigo = String(row.CD_MUN).trim();
     const latitude = Number(row.Latitude);
     const longitude = Number(row.Longitude);
     const classificacao = Number(row.cluster);
 
-    if (!row.NM_MUN || !Number.isFinite(codigo) || !Number.isFinite(latitude) ||
+    if (!row.NM_MUN || !/^\d{7}$/.test(codigo) || !Number.isFinite(latitude) ||
         !Number.isFinite(longitude) || !Number.isFinite(classificacao)) {
       throw new Error(`Dados inválidos na linha ${index + 2} de ${dataset.file}.`);
     }
@@ -160,7 +160,7 @@ function replaceActiveLayers(municipios, malha) {
   if (activePointsLayer) map.removeLayer(activePointsLayer);
   if (activeMeshLayer) map.removeLayer(activeMeshLayer);
 
-  const municipalityInfo = new Map(municipios.map((municipio) => [municipio.nome, municipio]));
+  const municipalityInfo = new Map(municipios.map((municipio) => [municipio.codigo, municipio]));
   activePointsLayer = createPointsLayer(municipios);
   activeMeshLayer = createMeshLayer(malha, municipalityInfo);
 
