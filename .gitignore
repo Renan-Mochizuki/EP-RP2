@@ -4,5 +4,4 @@ dist/
 node_modules/
 desktop.ini
 
-malha/*
-!malha/leiame.md
+malha/

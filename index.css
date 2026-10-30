@@ -122,3 +122,38 @@
   cursor: wait;
   opacity: 0.65;
 }
+
+.dados-controle {
+  position: fixed;
+  right: 30px;
+  bottom: 82px;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  color: #1f2937;
+  background: rgba(255, 255, 255, 0.96);
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  font-size: 14px;
+}
+
+.dados-controle select {
+  max-width: 190px;
+  padding: 4px 6px;
+}
+
+@media (max-width: 560px) {
+  .dados-controle {
+    right: 16px;
+    bottom: 82px;
+    left: 16px;
+    justify-content: space-between;
+  }
+
+  .dados-controle select {
+    max-width: none;
+    flex: 1;
+  }
+}
