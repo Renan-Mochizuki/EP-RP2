@@ -34,10 +34,14 @@ const colors = {
   1: '#2878B5',
   2: '#D64545',
   3: '#F2C14E',
+  4: '#2E8B57',
+  5: '#7E57C2',
 };
 
+const MAX_CLASSES = 6;
 const toggleButton = document.getElementById('visualizacao-toggle');
 const datasetSelect = document.getElementById('planilha-select');
+const classesLegend = document.getElementById('classes-legenda');
 let activePointsLayer = null;
 let activeMeshLayer = null;
 let showingMesh = true;
@@ -71,10 +75,18 @@ function updateClassCounts(municipios) {
   }, {});
   const formatter = new Intl.NumberFormat('pt-BR');
 
-  document.querySelectorAll('.class-count').forEach((element) => {
-    const classe = element.dataset.class;
-    element.textContent = formatter.format(counts[classe] || 0);
-  });
+  classesLegend.replaceChildren();
+  for (let classe = 0; classe < MAX_CLASSES; classe += 1) {
+    if (!counts[classe]) continue;
+
+    const item = document.createElement('div');
+    item.className = 'legend-item';
+    item.innerHTML = `
+      <span class="legend-color" style="background: ${colors[classe]}"></span>
+      Classe ${classe}: <span class="class-count">${formatter.format(counts[classe])}</span> municípios
+    `;
+    classesLegend.appendChild(item);
+  }
 }
 
 function createPointsLayer(municipios) {
@@ -142,7 +154,8 @@ async function loadMunicipalitiesFromSpreadsheet(dataset) {
     const classificacao = Number(row.cluster);
 
     if (!row.NM_MUN || !/^\d{7}$/.test(codigo) || !Number.isFinite(latitude) ||
-        !Number.isFinite(longitude) || !Number.isFinite(classificacao)) {
+        !Number.isFinite(longitude) || !Number.isInteger(classificacao) ||
+        classificacao < 0 || classificacao >= MAX_CLASSES) {
       throw new Error(`Dados inválidos na linha ${index + 2} de ${dataset.file}.`);
     }
 
