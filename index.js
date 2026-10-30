@@ -5,6 +5,9 @@ L_DISABLE_3D = false;
 const datasets = [
   { id: 'principal', label: 'Municípios', file: 'municipios.xlsx' },
   { id: '3v', label: 'Municípios 3V', file: 'municipios_3v.xlsx' },
+  { id: '4v', label: 'Municípios 4V', file: 'municipios_4v.xlsx' },
+  { id: '5v', label: 'Municípios 5V', file: 'municipios_5v.xlsx' },
+  { id: '6v', label: 'Municípios 6V', file: 'municipios_6v.xlsx' },
 ];
 
 const map = L.map('map_8230f5587939f2885ed5da8710cbf274', {
@@ -48,12 +51,7 @@ let showingMesh = true;
 let currentRequest = 0;
 
 function escapeHtml(value) {
-  return String(value)
-    .replaceAll('&', '&amp;')
-    .replaceAll('<', '&lt;')
-    .replaceAll('>', '&gt;')
-    .replaceAll('"', '&quot;')
-    .replaceAll("'", '&#039;');
+  return String(value).replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#039;');
 }
 
 function municipalityPopup(municipio) {
@@ -61,9 +59,7 @@ function municipalityPopup(municipio) {
     <div class="municipio-popup">
       <b>Código do município:</b> ${escapeHtml(municipio.codigo)}<br>
       <b>Nome do município:</b> ${escapeHtml(municipio.nome)}<br>
-      <b>Classificação:</b> ${escapeHtml(municipio.classificacao)}<br>
-      <b>Latitude:</b> ${municipio.latitude.toFixed(6)}<br>
-      <b>Longitude:</b> ${municipio.longitude.toFixed(6)}
+      <b>Classificação:</b> ${escapeHtml(municipio.classificacao)}
     </div>
   `;
 }
@@ -123,12 +119,8 @@ function createMeshLayer(malha, municipalityInfo) {
       const municipio = municipalityInfo.get(String(feature.properties?.CD_MUN));
       const classe = municipio?.classificacao;
 
-      layer.bindTooltip(
-        `<div><b>Município:</b> ${escapeHtml(nome)}<br><b>Classe:</b> ${classe ?? 'não informada'}</div>`,
-        { sticky: true },
-      );
-      layer.bindPopup(municipio ? municipalityPopup(municipio) :
-        `<div class="municipio-popup"><b>Município:</b> ${escapeHtml(nome)}<br><b>Classe:</b> não informada</div>`);
+      layer.bindTooltip(`<div><b>Município:</b> ${escapeHtml(nome)}<br><b>Classe:</b> ${classe ?? 'não informada'}</div>`, { sticky: true });
+      layer.bindPopup(municipio ? municipalityPopup(municipio) : `<div class="municipio-popup"><b>Município:</b> ${escapeHtml(nome)}<br><b>Classe:</b> não informada</div>`);
     },
   });
 }
@@ -153,9 +145,7 @@ async function loadMunicipalitiesFromSpreadsheet(dataset) {
     const longitude = Number(row.Longitude);
     const classificacao = Number(row.cluster);
 
-    if (!row.NM_MUN || !/^\d{7}$/.test(codigo) || !Number.isFinite(latitude) ||
-        !Number.isFinite(longitude) || !Number.isInteger(classificacao) ||
-        classificacao < 0 || classificacao >= MAX_CLASSES) {
+    if (!row.NM_MUN || !/^\d{7}$/.test(codigo) || !Number.isFinite(latitude) || !Number.isFinite(longitude) || !Number.isInteger(classificacao) || classificacao < 0 || classificacao >= MAX_CLASSES) {
       throw new Error(`Dados inválidos na linha ${index + 2} de ${dataset.file}.`);
     }
 
