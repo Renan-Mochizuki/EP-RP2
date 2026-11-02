@@ -1,8 +1,8 @@
-L_NO_TOUCH = false;
-L_DISABLE_3D = false;
+window.L_NO_TOUCH = false;
+window.L_DISABLE_3D = false;
 
 // Para adicionar outra planilha, coloque-a em data/ e acrescente uma entrada aqui.
-const datasets = [
+const DATASETS = [
   { id: 'principal', label: 'Municípios', file: 'municipios.xlsx' },
   { id: '3v', label: 'Municípios 3V', file: 'municipios_3v.xlsx' },
 ];
@@ -17,6 +17,7 @@ const map = L.map('map_8230f5587939f2885ed5da8710cbf274', {
 
 L.control.scale().addTo(map);
 
+// Chave Obrigatória
 L.tileLayer('https://basemaps.cartocdn.com/rastertiles/light_all/{z}/{x}/{y}.png?key=cb1_4rfx_1_77e134656d9a7c9838805a24', {
   minZoom: 0,
   maxZoom: 18,
@@ -29,7 +30,7 @@ L.tileLayer('https://basemaps.cartocdn.com/rastertiles/light_all/{z}/{x}/{y}.png
   opacity: 1,
 }).addTo(map);
 
-const colors = {
+const CLASS_COLORS = {
   0: '#808080',
   1: '#2878B5',
   2: '#D64545',
@@ -81,10 +82,13 @@ function updateClassCounts(municipios) {
 
     const item = document.createElement('div');
     item.className = 'legend-item';
-    item.innerHTML = `
-      <span class="legend-color" style="background: ${colors[classe]}"></span>
-      Classe ${classe}: <span class="class-count">${formatter.format(counts[classe])}</span> municípios
-    `;
+    const color = document.createElement('span');
+    color.className = `legend-color legend-color-${classe}`;
+    const label = document.createTextNode(`Classe ${classe}: `);
+    const count = document.createElement('span');
+    count.className = 'class-count';
+    count.textContent = formatter.format(counts[classe]);
+    item.append(color, label, count, document.createTextNode(' municípios'));
     classesLegend.appendChild(item);
   }
 }
@@ -93,7 +97,7 @@ function createPointsLayer(municipios) {
   const pointsLayer = L.layerGroup();
 
   municipios.forEach((municipio) => {
-    const color = colors[municipio.classificacao] || '#161616';
+    const color = CLASS_COLORS[municipio.classificacao] || '#161616';
     const marker = L.circleMarker([municipio.latitude, municipio.longitude], {
       color,
       fillColor: color,
@@ -115,7 +119,7 @@ function createMeshLayer(malha, municipalityInfo) {
     style: (feature) => {
       const municipio = municipalityInfo.get(String(feature.properties?.CD_MUN));
       const classe = municipio?.classificacao;
-      const color = colors[classe] || '#161616';
+      const color = CLASS_COLORS[classe] || '#161616';
       return { color: '#555', fillColor: color, fillOpacity: 0.8, weight: 0.3 };
     },
     onEachFeature: (feature, layer) => {
@@ -205,7 +209,7 @@ async function loadMap() {
   const malha = await malhaResponse.json();
 
   datasetSelect.replaceChildren();
-  datasets.forEach((dataset) => {
+  DATASETS.forEach((dataset) => {
     const option = document.createElement('option');
     option.value = dataset.id;
     option.textContent = dataset.label;
@@ -213,11 +217,11 @@ async function loadMap() {
   });
 
   datasetSelect.addEventListener('change', () => {
-    const dataset = datasets.find((item) => item.id === datasetSelect.value);
+    const dataset = DATASETS.find((item) => item.id === datasetSelect.value);
     if (dataset) loadDataset(dataset, malha);
   });
 
-  await loadDataset(datasets[0], malha);
+  await loadDataset(DATASETS[0], malha);
   datasetSelect.disabled = false;
 }
 

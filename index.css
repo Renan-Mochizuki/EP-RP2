@@ -1,78 +1,3 @@
-.regioes-painel {
-  position: fixed;
-  bottom: 226px;
-  left: 30px;
-  z-index: 9999;
-  min-width: 218px;
-  padding: 14px;
-  background: rgba(255, 255, 255, 0.96);
-  border: 1px solid rgba(31, 41, 55, 0.14);
-  border-radius: 12px;
-  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.16);
-  font-family:
-    system-ui,
-    -apple-system,
-    BlinkMacSystemFont,
-    'Segoe UI',
-    sans-serif;
-}
-
-.regioes-titulo {
-  display: block;
-  margin-bottom: 10px;
-  color: #1f2937;
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 0.01em;
-}
-
-.regiao-botao {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  width: 100%;
-  padding: 10px 12px;
-  color: #ffffff;
-  background: linear-gradient(135deg, #2563eb, #4f46e5);
-  border: 0;
-  border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(37, 99, 235, 0.28);
-  font-size: 13px;
-  font-weight: 600;
-  text-decoration: none;
-  transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease;
-}
-
-.regiao-botao::after {
-  content: '→';
-  font-size: 17px;
-  line-height: 1;
-}
-
-.regiao-botao:hover,
-.regiao-botao:focus-visible {
-  color: #ffffff;
-  transform: translateY(-1px);
-  box-shadow: 0 6px 14px rgba(37, 99, 235, 0.36);
-}
-
-.regiao-botao:focus-visible {
-  outline: 3px solid rgba(96, 165, 250, 0.55);
-  outline-offset: 2px;
-}
-
-@media (max-width: 560px) {
-  .regioes-painel {
-    right: 16px;
-    bottom: 244px;
-    left: 16px;
-    min-width: 0;
-  }
-}
-
 .legend-divider {
   margin: 7px 0;
 }
@@ -89,10 +14,12 @@
   margin-right: 7px;
 }
 
-.legend-color-808080 { background: #808080; }
-.legend-color-2878b5 { background: #2878b5; }
-.legend-color-d64545 { background: #d64545; }
-.legend-color-f2c14e { background: #f2c14e; }
+.legend-color-0 { background: #808080; }
+.legend-color-1 { background: #2878b5; }
+.legend-color-2 { background: #d64545; }
+.legend-color-3 { background: #f2c14e; }
+.legend-color-4 { background: #2e8b57; }
+.legend-color-5 { background: #7e57c2; }
 
 .municipio-popup {
   width: 100%;
