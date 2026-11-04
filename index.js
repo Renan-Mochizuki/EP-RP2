@@ -45,7 +45,7 @@ const CLASS_COLORS = {
   5: '#7E57C2',
 };
 
-const MAX_CLASSES = 6;
+const MAX_CLASSES = 7;
 const toggleButton = document.getElementById('visualizacao-toggle');
 const datasetSelect = document.getElementById('planilha-select');
 const classesLegend = document.getElementById('classes-legenda');
