@@ -7,7 +7,10 @@ const DATASETS = [
   { id: '3v', label: 'Municípios 3V', file: 'municipios_3v.xlsx' },
   { id: '4v', label: 'Municípios 4V', file: 'municipios_4v.xlsx' },
   { id: '5v', label: 'Municípios 5V', file: 'municipios_5v.xlsx' },
-  { id: '6v', label: 'Municípios 6V', file: 'municipios_6v.xlsx' },
+  { id: '6v', label: 'Municípios 6V', file: 'municipios_6v.xlsx' },  
+  { id: 'a', label: 'Municípios A', file: 'municipios_a.xlsx' },
+  { id: 'b', label: 'Municípios B', file: 'municipios_b.xlsx' },
+  { id: 'c', label: 'Municípios C', file: 'municipios_c.xlsx' },
 ];
 
 const map = L.map('map_8230f5587939f2885ed5da8710cbf274', {
