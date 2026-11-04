@@ -43,6 +43,7 @@ const CLASS_COLORS = {
   3: '#F2C14E',
   4: '#2E8B57',
   5: '#7E57C2',
+  6: '#D998CE',
 };
 
 const MAX_CLASSES = 7;
